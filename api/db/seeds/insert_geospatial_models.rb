@@ -47,7 +47,7 @@ if County.all.count == 0
   puts 'Importing county data'
 
   counties_sql = `shp2pgsql -c -g geom -W 'UTF-8' -s 4269\
-    #{Rails.root.join('db', 'shpfiles', 'cb_2018_us_county_5m', 'cb_2018_us_county_5m.shp')} counties_ref`
+    #{Rails.root.join('db', 'shpfiles', 'cb_2018_us_county_20m', 'cb_2018_us_county_20m.shp')} counties_ref`
 
   connection.execute "drop table if exists counties_ref"
   connection.execute counties_sql
