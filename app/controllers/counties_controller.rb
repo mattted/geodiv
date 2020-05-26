@@ -1,6 +1,6 @@
 class CountiesController < ApplicationController
   def index
     counties = County.all
-    render json: counties
+    render json: CountySerializer.new(counties)
   end
 end
