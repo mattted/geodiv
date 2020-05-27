@@ -24,7 +24,7 @@
 /api/.byebug_history
 
 tags
-/db/inat/*.csv
+/api/db/inat/*.csv
 
 # Ignore master key for decrypting credentials and more.
 /api/config/master.key
