@@ -1,6 +1,6 @@
 class CountiesController < ApplicationController
   def index
-    x = <<-SQL
+    to_geojson = <<-SQL
       SELECT jsonb_build_object(
         'type', 'FeatureCollection',
         'features', jsonb_agg(feature)
@@ -17,8 +17,12 @@ class CountiesController < ApplicationController
       ) features;
     SQL
 
-    res = ActiveRecord::Base.connection.execute(x)
-    render json: res[0]["jsonb_build_object"]
+    Observation.county_agg.each do |kv|
+      byebug
+    end
+
+    geojson = ActiveRecord::Base.connection.execute(to_geojson)
+    render json: geojson[0]["jsonb_build_object"]
   end
   
 end

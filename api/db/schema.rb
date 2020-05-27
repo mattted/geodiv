@@ -54,23 +54,23 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
     t.datetime "date"
     t.decimal "lat"
     t.decimal "lon"
+    t.string "inat"
     t.geometry "geom", limit: {:srid=>4269, :type=>"st_point"}
-    t.bigint "observation_id"
+    t.bigint "organism_id"
     t.bigint "county_id"
     t.index ["county_id"], name: "index_observations_on_county_id"
     t.index ["geom"], name: "index_observations_on_geom", using: :gist
-    t.index ["observation_id"], name: "index_observations_on_observation_id"
+    t.index ["organism_id"], name: "index_observations_on_organism_id"
   end
 
   create_table "organisms", force: :cascade do |t|
     t.string "sciname"
     t.string "kingdom"
     t.string "phylum"
-    t.string "class"
+    t.string "klass"
     t.string "order"
     t.string "family"
     t.string "genus"
-    t.string "inat"
   end
 
   create_table "states", force: :cascade do |t|
@@ -85,6 +85,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
 
   add_foreign_key "counties", "states"
   add_foreign_key "observations", "counties"
-  add_foreign_key "observations", "observations"
+  add_foreign_key "observations", "organisms"
   add_foreign_key "states", "countries"
 end
