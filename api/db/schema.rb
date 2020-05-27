@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
     t.string "orden"
     t.string "family"
     t.string "genus"
+    t.geometry "geom", limit: {:srid=>4269, :type=>"st_point"}
+    t.string "county"
   end
 
   create_table "counties", force: :cascade do |t|

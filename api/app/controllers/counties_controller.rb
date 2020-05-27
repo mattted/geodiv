@@ -17,10 +17,6 @@ class CountiesController < ApplicationController
       ) features;
     SQL
 
-    Observation.county_agg.each do |kv|
-      byebug
-    end
-
     geojson = ActiveRecord::Base.connection.execute(to_geojson)
     render json: geojson[0]["jsonb_build_object"]
   end
