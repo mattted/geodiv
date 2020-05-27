@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uname: MyString
+  date: 2020-05-26 19:58:43
+  lat: 1.5
+  lon: 1.5
+  geom: 
+
+two:
+  uname: MyString
+  date: 2020-05-26 19:58:43
+  lat: 1.5
+  lon: 1.5
+  geom: 
