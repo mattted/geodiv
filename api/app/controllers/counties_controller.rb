@@ -20,4 +20,5 @@ class CountiesController < ApplicationController
     res = ActiveRecord::Base.connection.execute(x)
     render json: res[0]["jsonb_build_object"]
   end
+  
 end
