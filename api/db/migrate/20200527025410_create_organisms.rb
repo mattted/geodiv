@@ -4,11 +4,11 @@ class CreateOrganisms < ActiveRecord::Migration[6.0]
       t.string :sciname
       t.string :kingdom
       t.string :phylum
-      t.string :class
+      t.string :klass
       t.string :order
       t.string :family
       t.string :genus
-      t.string :inat
     end
+    # add_index :organisms, :sciname
   end
 end

@@ -5,8 +5,9 @@ class CreateObservations < ActiveRecord::Migration[6.0]
       t.datetime :date
       t.decimal :lat
       t.decimal :lon
+      t.string :inat
       t.st_point :geom, srid: 4269
-      t.references :observation, foreign_key: true
+      t.references :organism, foreign_key: true
       t.references :county, foreign_key: true
     end
     
