@@ -3,8 +3,8 @@ class CreateObservations < ActiveRecord::Migration[6.0]
     create_table :observations do |t|
       t.string :uname
       t.datetime :date
-      t.float :lat
-      t.float :lon
+      t.decimal :lat
+      t.decimal :lon
       t.st_point :geom, srid: 4269
       t.references :observation, foreign_key: true
       t.references :county, foreign_key: true
