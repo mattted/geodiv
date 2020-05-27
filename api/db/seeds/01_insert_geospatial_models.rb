@@ -1,6 +1,7 @@
 puts 'Deleting old geographic models in db'
 connection = ActiveRecord::Base.connection()
 
+Observation.delete_all
 County.delete_all
 State.delete_all
 Country.delete_all
@@ -11,7 +12,7 @@ connection.execute "alter sequence counties_id_seq restart with 1"
 
 puts
 
-if Country.all.count == 0
+if Country.all.count.zero?
   puts 'Importing country data'
 
   country_sql = `shp2pgsql -c -g geom -W 'UTF-8' -s 4269\
@@ -27,7 +28,7 @@ if Country.all.count == 0
   connection.execute "drop table countries_ref"
 end
 
-if State.all.count == 0
+if State.all.count.zero?
   puts 'Importing state data'
 
   states_sql = `shp2pgsql -c -g geom -W 'UTF-8' -s 4269\
@@ -43,7 +44,7 @@ if State.all.count == 0
   connection.execute "drop table states_ref"
 end
 
-if County.all.count == 0
+if County.all.count.zero?
   puts 'Importing county data'
 
   counties_sql = `shp2pgsql -c -g geom -W 'UTF-8' -s 4269\
@@ -58,8 +59,10 @@ if County.all.count == 0
 
   connection.execute "drop table counties_ref"
 
-  County.all.each do |county|
-    county.state_id = State.find_by(statefp: county.statefp).statefp
-    county.save
-  end
+  connection.execute <<-SQL
+    UPDATE counties SET state_id = states.id
+    FROM states
+    WHERE counties.statefp = states.statefp
+  SQL
+
 end
