@@ -6,42 +6,12 @@
   <link rel="stylesheet" href="css/mystyles.css">
 </head>
 <body>
-  <h1 class="title">GeoDiv</h1>
-  <p class="subtitle">Geographic display of biodiversity observations from <a href="https://www.inaturalist.com">iNaturalist</a></p>
-
-  <div class="field">
-    <div class="control">
-      <input class="input" type="text" placeholder="Some text...">
-    </div>
+  <div class="level"></div>
+  <div class="container has-text-centered">
+    <h1 class="title">GeoDiv</h1>
+    <p class="subtitle">Geographic display of biodiversity observations from <a href="https://www.inaturalist.org">iNaturalist</a></p>
   </div>
-  <div class="field">
-    <p class="control">
-      <span class="select">
-        <select>
-          <options>Only One????</options>
-        </select>
-      </span>
-    </p>
-  </div>
-
-  <div class="buttons">
-    <a class="button is-primary is-small">Primary</a>
-    <a class="button is-link is-small">Link</a>
-    <a class="button is-info is-small">Info</a>
-    <a class="button is-success is-small">Success</a>
-    <a class="button is-warning is-small">Warning</a>
-    <a class="button is-danger is-small">Danger</a>
-  </div>
-  <div class="buttons">
-    <a class="button is-primary is-small is-outlined">Primary</a>
-    <a class="button is-link is-small is-outlined">Link</a>
-    <a class="button is-info is-small is-outlined">Info</a>
-    <a class="button is-success is-small is-outlined">Success</a>
-    <a class="button is-warning is-small is-outlined">Warning</a>
-    <a class="button is-danger is-small is-outlined is-loading">Danger</a>
-  </div>
-  <div id="d3test"></div>
-
+  <div class="container" id="map"></div>
   <script src="./bundle.js"></script> 
 </body>
 </html>

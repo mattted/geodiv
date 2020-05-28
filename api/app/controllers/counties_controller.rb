@@ -20,5 +20,9 @@ class CountiesController < ApplicationController
     geojson = ActiveRecord::Base.connection.execute(to_geojson)
     render json: geojson[0]["jsonb_build_object"]
   end
+
+  def counties_obs
+    render json: County.obs_name
+  end
   
 end
