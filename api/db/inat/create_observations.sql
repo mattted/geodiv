@@ -1,4 +1,4 @@
-CREATE TABLE observations (
+CREATE TABLE biodiv (
 	link VARCHAR, 
 	uname VARCHAR, 
 	date TIMESTAMP, 
