@@ -22,7 +22,7 @@ class CountiesController < ApplicationController
   end
 
   def counties_obs
-    render json: County.obs_name
+    render json: County.obs_id
   end
   
 end

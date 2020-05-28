@@ -5,4 +5,5 @@ class County < ApplicationRecord
 
   scope :obs_name, -> { joins(:observations).group("counties.name").count }
   scope :obs_id, -> { joins(:observations).group("counties.id").count }
+  scope :org_id, -> { joins(:organisms).group("counties.id").count }
 end
