@@ -14,7 +14,7 @@ console.log("Webpack Entry Point Loaded");
 
 
 let map = new Map(600, 900, '#map')
-map.mountData('counties', 'num_per_county')
+map.mountData('counties', 'obs_per_county')
 
 document.querySelector('#mapchange').addEventListener('click', (e) => {
   map.mountData('counties', 'org_per_county')

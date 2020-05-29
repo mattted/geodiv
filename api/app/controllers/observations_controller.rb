@@ -1,7 +1,7 @@
 class ObservationsController < ApplicationController
 
-  def num_per_county
-    render json: Observation.num_per_county
+  def obs_per_county
+    render json: Observation.obs_per_county
   end
 
   def org_per_county
