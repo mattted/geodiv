@@ -35,3 +35,9 @@ $family-sans-serif: "Fira Sans Extra Condensed", "sans-serif";
 // $body-background-color: $nord6;
 
 @import "~bulma/bulma";
+
+.graticule {
+  fill: none;
+  stroke: $nord4;
+  stroke-width: .5px;
+}

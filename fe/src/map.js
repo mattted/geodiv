@@ -11,20 +11,23 @@ export default class Map {
       .append("svg")
       .attr("width", this.width)
       .attr("height", this.height)
-    this.map = this.svg.append('g').attr('class', 'boundary')
+    this.boundary = this.svg.append('g').attr('class', 'boundary')
+    this.graticule = d3.geoGraticule()
+      .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
+      .step([5, 5]);
   }
 
   async mountData(geo, metric) {
     this.geoData = await API.fetchGeo(geo)
     this.metricData = await API.fetchMetric(metric)
-    this.metricExtent()
-    this.setBounds()
+    this.setBounds(this.geoData)
+    this.bindMetric()
   }
 
-  setBounds() {
+  setBounds(focusGeo) {
     this.projection.scale(1).translate([0,0])
     // get bounds with geopath and geodata
-    let b = this.path.bounds(this.geoData);
+    let b = this.path.bounds(focusGeo);
     // set scale from bounds
     let s = .95 / Math.max((b[1][0] - b[0][0]) / this.width,
       (b[1][1] - b[0][1]) / this.height);
@@ -33,29 +36,46 @@ export default class Map {
       (this.height - s * (b[1][1] + b[0][1])) /2]
     // set overall projection scale
     this.projection.scale(s).translate(t)
-
-    this.drawMap()
   }
 
-  metricExtent() {
+  bindMetric() {
+    this.geoData.features.forEach(el => {
+      el.properties.metric = this.metricData[el.id]
+    })
     let metex = d3.extent(Object.values(this.metricData))
     this.colorScale = d3.scaleLog()
       .domain([1, metex[1]])
       .range(["lightgray", "#3b4252"])
+    this.drawMap()
   }
 
   drawMap() {
-    this.map.selectAll('path')
-      .data(this.geoData.features)
-      .enter()
-      .append('path')
+    // draw graticules
+    this.svg.selectAll('path')
+      .data(this.graticule.lines())
+      .enter().append('path')
+      .attr('class', 'graticule')
       .attr('d', this.path)
-      // .attr('stroke', "0px")
-      .attr('fill',  d => {
-        // if(this.colorScale(this.metricData[d.id]) == undefined) return d3.interpolateViridis(0)
-        // return d3.interpolateViridis(this.logScale(this.metricData[d.id]))
-        if(this.colorScale(this.metricData[d.id]) == undefined) return "lightgray"
-        return this.colorScale(this.metricData[d.id])
+
+    this.boundary = this.svg.selectAll('.boundary')
+      .data(this.geoData.features)
+
+    this.boundary.exit().remove();
+    this.boundary.enter().append('path')
+      .attr('class', 'counties')
+      .attr('d', this.path)
+      .attr('fill', d => {
+        if(this.colorScale(d.properties.metric) == undefined) return "lightgray"
+        return this.colorScale(d.properties.metric)
       })
+
+    this.boundary.transition().duration(500)
+      .attr('d', this.path)
+      .attr('fill', d => {
+        if(this.colorScale(d.properties.metric) == undefined) return "lightgray"
+        return this.colorScale(d.properties.metric)
+      })
+
   }
+
 }
