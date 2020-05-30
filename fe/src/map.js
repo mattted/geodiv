@@ -15,13 +15,15 @@ export default class Map {
     this.graticule = d3.geoGraticule()
       .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
       .step([5, 5]);
+    this.metricData = {}
   }
 
-  async mountData(geo, metric) {
-    this.geoData = await API.fetchGeo(geo)
-    this.metricData = await API.fetchMetric(metric)
+  // takes api endpoints geo and metric
+  async mountData(geo = 'none', metric = 'none') {
+    if(geo !== 'none') this.geoData = await API.fetchGeo(geo)
+    if(metric !== 'none') this.metricData = await API.fetchMetric(metric)
+    if(this.metricData !== {}) this.bindMetric()
     this.setBounds(this.geoData)
-    this.bindMetric()
   }
 
   setBounds(focusGeo) {
@@ -36,6 +38,7 @@ export default class Map {
       (this.height - s * (b[1][1] + b[0][1])) /2]
     // set overall projection scale
     this.projection.scale(s).translate(t)
+    this.drawMap()
   }
 
   bindMetric() {
@@ -45,8 +48,7 @@ export default class Map {
     let metex = d3.extent(Object.values(this.metricData))
     this.colorScale = d3.scaleLog()
       .domain([1, metex[1]])
-      .range(["lightgray", "#3b4252"])
-    this.drawMap()
+      .range(["#ffffff", "#3b4252"])
   }
 
   drawMap() {
@@ -60,22 +62,21 @@ export default class Map {
     this.boundary = this.svg.selectAll('.boundary')
       .data(this.geoData.features)
 
-    this.boundary.exit().remove();
     this.boundary.enter().append('path')
       .attr('class', 'counties')
       .attr('d', this.path)
       .attr('fill', d => {
-        if(this.colorScale(d.properties.metric) == undefined) return "lightgray"
+        if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
         return this.colorScale(d.properties.metric)
       })
 
     this.boundary.transition().duration(500)
       .attr('d', this.path)
       .attr('fill', d => {
-        if(this.colorScale(d.properties.metric) == undefined) return "lightgray"
+        if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
         return this.colorScale(d.properties.metric)
       })
 
+    this.boundary.exit().remove();
   }
-
 }

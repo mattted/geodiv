@@ -13,9 +13,15 @@ import Map from './map.js'
 console.log("Webpack Entry Point Loaded");
 
 
-let map = new Map(600, 900, '#map')
-map.mountData('counties', 'obs_per_county')
+const map = new Map(600, 900, '#map')
+map.mountData('counties')
 
-document.querySelector('#mapchange').addEventListener('click', (e) => {
+
+document.querySelector('#by_org').addEventListener('click', (e) => {
   map.mountData('counties', 'org_per_county')
+  // map.drawMap
+})
+document.querySelector('#by_obs').addEventListener('click', (e) => {
+  map.mountData('counties', 'obs_per_county')
+  // map.drawMap
 })
