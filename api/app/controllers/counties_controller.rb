@@ -22,6 +22,7 @@ class CountiesController < ApplicationController
   # end
 
   def index
+    # geojson = County.geo
     render json: County.geo
   end
 
