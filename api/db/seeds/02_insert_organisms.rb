@@ -11,7 +11,7 @@ if Organism.all.count.zero?
   puts 'Aggregate and create organism rows'
 
   copy_sql = <<-SQL
-    INSERT INTO organisms(kingdom, phylum, klass, "order", family, genus, sciname, cname, taxid)
+    INSERT INTO organisms(kingdom, phylum, klass, "order", family, genus, species, cname, taxid)
     SELECT kingdom, phylum, class, orden, family, genus, species, cname, taxid
     FROM biodiv 
     GROUP BY kingdom, phylum, class, orden, family, genus, species, cname, taxid;

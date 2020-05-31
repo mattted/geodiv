@@ -17,20 +17,25 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
   enable_extension "postgis"
 
   create_table "biodiv", id: false, force: :cascade do |t|
-    t.string "link"
-    t.string "uname"
+    t.decimal "taxid"
     t.datetime "date"
-    t.decimal "lat"
-    t.decimal "lon"
-    t.string "country"
-    t.string "state"
-    t.string "sciname"
     t.string "kingdom"
     t.string "phylum"
     t.string "class"
     t.string "orden"
     t.string "family"
     t.string "genus"
+    t.string "species"
+    t.decimal "lat"
+    t.decimal "lon"
+    t.string "url"
+    t.string "cname"
+  end
+
+  create_table "cname", id: false, force: :cascade do |t|
+    t.decimal "taxid"
+    t.string "cname"
+    t.string "language"
   end
 
   create_table "counties", force: :cascade do |t|
@@ -50,7 +55,6 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
   end
 
   create_table "observations", force: :cascade do |t|
-    t.string "uname"
     t.datetime "date"
     t.decimal "lat"
     t.decimal "lon"
@@ -64,13 +68,15 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
   end
 
   create_table "organisms", force: :cascade do |t|
-    t.string "sciname"
+    t.string "species"
     t.string "kingdom"
     t.string "phylum"
     t.string "klass"
     t.string "order"
     t.string "family"
     t.string "genus"
+    t.string "cname"
+    t.integer "taxid"
   end
 
   create_table "states", force: :cascade do |t|
