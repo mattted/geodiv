@@ -4,7 +4,7 @@ connection = ActiveRecord::Base.connection()
 Observation.delete_all
 drop_sci_name = <<-SQL
   ALTER TABLE observations
-  DROP COLUMN IF EXISTS sciname
+  DROP COLUMN IF EXISTS taxid
 SQL
 connection.execute drop_sci_name
 
@@ -16,12 +16,12 @@ if Observation.all.count.zero?
 
   temp_col = <<-SQL
     ALTER TABLE observations
-    ADD COLUMN sciname VARCHAR;
+    ADD COLUMN taxid NUMERIC;
   SQL
 
   copy_sql = <<-SQL
-    INSERT INTO observations(lat, lon, date, uname, sciname, inat)
-    SELECT lat, lon, date, uname, sciname, link
+    INSERT INTO observations(lat, lon, date, inat, taxid)
+    SELECT lat, lon, date, url, taxid 
     FROM biodiv 
   SQL
 
@@ -38,7 +38,7 @@ if Observation.all.count.zero?
   set_organism_id = <<-SQL
     UPDATE observations SET organism_id = organisms.id
     FROM organisms
-    WHERE observations.sciname = organisms.sciname
+    WHERE observations.taxid = organisms.taxid
   SQL
 
   puts 'Create temp sciname col'

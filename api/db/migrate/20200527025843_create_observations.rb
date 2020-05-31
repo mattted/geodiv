@@ -1,7 +1,6 @@
 class CreateObservations < ActiveRecord::Migration[6.0]
   def change
     create_table :observations do |t|
-      t.string :uname
       t.datetime :date
       t.decimal :lat
       t.decimal :lon

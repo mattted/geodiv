@@ -13,7 +13,7 @@ class Observation < ApplicationRecord
 
   def self.org_per_county
     Rails.cache.fetch("org_per_county", expires_in: 12.hours) do
-      Observation.select(:organism_id).distinct.group(:county_id).count;
+      Observation.select(:organism_id).distinct.group(:county_id).count
     end
   end
 end
