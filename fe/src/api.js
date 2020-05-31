@@ -22,5 +22,17 @@ export default class API {
       console.log(err)
     }
   }
+
+  static async fetchKingdom() {
+    try {
+      let response = await fetch(this.url+'kingdom')
+      let data = await response.json()
+      return data
+    } catch(err) {
+      // TODO: Handle Error
+      console.log(err)
+    }
+  }
+
 }
 
