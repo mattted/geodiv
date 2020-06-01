@@ -23,9 +23,20 @@ export default class API {
     }
   }
 
-  static async fetchKingdom() {
+  static async fetchKingdoms() {
     try {
-      let response = await fetch(this.url+'kingdom')
+      let response = await fetch(this.url+'kingdoms')
+      let data = await response.json()
+      return data
+    } catch(err) {
+      // TODO: Handle Error
+      console.log(err)
+    }
+  }
+
+  static async fetchCommonNames() {
+    try {
+      let response = await fetch(this.url+'cnames')
       let data = await response.json()
       return data
     } catch(err) {

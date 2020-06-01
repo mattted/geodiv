@@ -1,7 +1,11 @@
 class OrganismsController < ApplicationController
 
-  def kingdom
-    render json: Organism.kingdom
+  def kingdoms
+    render json: Organism.kingdoms
+  end
+
+  def cnames
+    render json: Organism.cnames
   end
 
 end
