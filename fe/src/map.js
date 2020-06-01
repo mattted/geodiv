@@ -48,7 +48,7 @@ export default class Map {
     let metex = d3.extent(Object.values(this.metricData))
     this.colorScale = d3.scaleLog()
       .domain([1, metex[1]])
-      .range(["#ffffff", "#3b4252"])
+      .range(["#d0d0d0", "#3b4252"])
   }
 
   drawMap() {

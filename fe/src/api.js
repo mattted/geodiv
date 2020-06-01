@@ -8,7 +8,7 @@ export default class API {
       return data
     } catch(err) {
       // TODO: Handle Error
-      console.log(err)
+      alert(err)
     }
   }
 
@@ -19,29 +19,18 @@ export default class API {
       return data
     } catch(err) {
       // TODO: Handle Error
-      console.log(err)
+      alert(err)
     }
   }
 
-  static async fetchKingdoms() {
+  static async fetchDatalist(type) {
     try {
-      let response = await fetch(this.url+'kingdoms')
+      let response = await fetch(this.url+type)
       let data = await response.json()
       return data
     } catch(err) {
       // TODO: Handle Error
-      console.log(err)
-    }
-  }
-
-  static async fetchCommonNames() {
-    try {
-      let response = await fetch(this.url+'cnames')
-      let data = await response.json()
-      return data
-    } catch(err) {
-      // TODO: Handle Error
-      console.log(err)
+      alert(err)
     }
   }
 
