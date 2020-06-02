@@ -6,6 +6,7 @@ export default class Map {
   constructor(height, width, element) {
     this.width = width
     this.height = height
+    this.zoomed = false
     this.projection = d3.geoAlbersUsa()
     this.path = d3.geoPath().projection(this.projection) 
     this.svg = d3.select(element)
@@ -94,8 +95,8 @@ export default class Map {
         if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
         return this.colorScale(d.properties.metric)
       })
-      // .on('mouseover', this.tip.show)
-      // .on('mouseout', this.tip.hide)
+      // .on('mouseover', d => console.log(d))
+      .on('click', d => this.focus(d)) 
 
     this.boundary.exit().remove()
     
@@ -109,6 +110,18 @@ export default class Map {
     if(Object.entries(this.metricData).length !== 0) {
       this.legend = new MapLegend(this)
       this.legend.drawLegend()
+    }
+  }
+
+  focus(feature) {
+    if(this.zoomed === feature) {
+      this.setBounds(this.geoData)
+      this.drawMap()
+      this.zoomed = !this.zoomed
+    } else {
+      this.setBounds(feature)
+      this.drawMap()
+      this.zoomed = feature
     }
   }
 
