@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import API from './api.js'
+import * as d3legend from 'd3-svg-legend'
 
 export default class Map {
   constructor(height, width, element) {
@@ -14,7 +15,7 @@ export default class Map {
     this.boundary = this.svg.append('g').attr('class', 'boundary')
     this.legendGroup = this.svg.append("g")
       .attr("class", "legendGroup")
-      .attr("transform", "translate(20,20)")
+      .attr("transform", `translate(20,${this.height-150})`)
     this.graticule = d3.geoGraticule()
       .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
       .step([5, 5]);
@@ -110,5 +111,26 @@ export default class Map {
         if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
         return this.colorScale(d.properties.metric)
       })
+
+    if(Object.entries(this.metricData).length !== 0) this.drawLegend()
+  }
+
+  drawLegend() {
+    this.logLegend = d3legend.legendColor()
+      // .orient('horizontal')
+      // .cells([1, 100, 1000, 5000, 10000])
+      .scale(this.colorScale)
+
+    this.legendGroup.call(this.logLegend)
+
+    this.legendTitle = this.legendGroup.append('text')
+      .attr('y', -20)
+      .attr('class', 'legend-title')
+      .text('Total Observations')
+
+    this.legendByline = this.legendGroup.append('text')
+      .attr('y', -6)
+      .attr('class', 'legend-byline')
+      .text(`${this.queryCol} ${this.querySearch}`)
   }
 }

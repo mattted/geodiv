@@ -17,18 +17,23 @@
   <!--   </div> -->
   <!-- </div> -->
   </div>
+  <div class="level"></div>
   <div class="container control">
-    <div class="buttons are-small filterSelect is-centered">
-      <button id="kingdom" class="filter button is-primary">Kingdom</button>
-      <button id="phylum" class="filter button is-outlined is-primary">Phylum</button>
-      <button id="klass" class="filter button is-outlined is-primary">Class</button>
-      <button id="order" class="filter button is-outlined is-primary">Order</button>
-      <button id="family" class="filter button is-outlined is-primary">Family</button>
-      <button id="genus" class="filter button is-outlined is-primary">Genus</button>
-      <button id="species" class="filter button is-outlined is-primary">Species</button>
-      <button id="cname" class="filter button is-outlined is-primary">Common Name</button>
+    <div class="columns is-centered">
+      <div class="column is-three-fifths">
+        <div class="buttons are-small filterSelect is-centered">
+          <button id="kingdom" class="filter button is-primary">Kingdom</button>
+          <button id="phylum" class="filter button is-outlined is-primary">Phylum</button>
+          <button id="klass" class="filter button is-outlined is-primary">Class</button>
+          <button id="order" class="filter button is-outlined is-primary">Order</button>
+          <button id="family" class="filter button is-outlined is-primary">Family</button>
+          <button id="genus" class="filter button is-outlined is-primary">Genus</button>
+          <button id="species" class="filter button is-outlined is-primary">Species</button>
+          <button id="cname" class="filter button is-outlined is-primary">Common Name</button>
+          <input id="mapfilter" class="input filter" list="mapdatalist" placeholder="Select above and search...">
+        </div>
+      </div>
     </div>
-    <input id="mapfilter" class="input filter" list="mapdatalist" placeholder="Select above and search...">
   </div>
   <div class="columns is-centered" id="map"></div>
   <datalist id="mapdatalist"></datalist>
