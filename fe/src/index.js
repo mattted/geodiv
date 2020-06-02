@@ -1,4 +1,4 @@
-// require('./mystyles.scss')
+require('./mystyles.scss')
 import "@babel/polyfill";
 import Map from './map.js'
 // import API from './api.js'
@@ -13,14 +13,14 @@ map.mountData('counties')
 // load map datalist filters
 Filter.populateDatalist('kingdom')
 
-document.querySelector('#by_org').addEventListener('click', () => {
-  map.mountData('none', 'org_per_county')
-  .then(mapData => map.drawMap())
-})
-document.querySelector('#by_obs').addEventListener('click', () => {
-  map.mountData('none', 'obs_per_county')
-    .then(mapData => map.drawMap())
-})
+// document.querySelector('#by_org').addEventListener('click', () => {
+//   map.mountData('none', 'org_per_county')
+//   .then(mapData => map.drawMap())
+// })
+// document.querySelector('#by_obs').addEventListener('click', () => {
+//   map.mountData('none', 'obs_per_county')
+//     .then(mapData => map.drawMap())
+// })
 
 document.querySelectorAll('button.filter').forEach(button => button.addEventListener('click', e => {
   Array.from(e.target.parentElement.children).forEach(button => button.classList.add('is-outlined'))

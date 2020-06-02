@@ -1,6 +1,7 @@
 class StatesController < ApplicationController
+
   def index
-    states = State.all
-    render json: StateSerializer.new(states).serialized_json
+    render json: State.geo
   end
+
 end

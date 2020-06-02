@@ -10,16 +10,15 @@
   <div class="container has-text-centered">
     <h1 class="title">GeoDiv</h1>
     <p class="subtitle">Geographic display of biodiversity observations from <a href="https://www.inaturalist.org">iNaturalist</a></p>
-  <div class="columns is-centered">
-    <div class="column">
-      <button class="button is-info is-small" id="by_org">By Organisms</button>
-      <button class="button is-info is-small" id="by_obs">By Observations</button>
-    </div>
+  <!-- <div class="columns is-centered"> -->
+  <!--   <div class="column"> -->
+  <!--     <button class="button is-info is-small" id="by_org">By Organisms</button> -->
+  <!--     <button class="button is-info is-small" id="by_obs">By Observations</button> -->
+  <!--   </div> -->
+  <!-- </div> -->
   </div>
-  </div>
-  <div class="columns is-centered" id="map"></div>
-  <div class="control">
-    <div class="buttons are-small filterSelect">
+  <div class="container control">
+    <div class="buttons are-small filterSelect is-centered">
       <button id="kingdom" class="filter button is-primary">Kingdom</button>
       <button id="phylum" class="filter button is-outlined is-primary">Phylum</button>
       <button id="klass" class="filter button is-outlined is-primary">Class</button>
@@ -31,6 +30,7 @@
     </div>
     <input id="mapfilter" class="input filter" list="mapdatalist" placeholder="Select above and search...">
   </div>
+  <div class="columns is-centered" id="map"></div>
   <datalist id="mapdatalist"></datalist>
   <script src="./bundle.js"></script> 
 </body>

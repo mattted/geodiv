@@ -110,6 +110,5 @@ export default class Map {
         if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
         return this.colorScale(d.properties.metric)
       })
-
   }
 }
