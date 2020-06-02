@@ -6,7 +6,7 @@ import Filter from './filter.js'
 // import * as d3 from 'd3';
 
 // load map
-const map = new Map(600, 900, '#map')
+const map = new Map(500, 700, '#map')
 map.mountData('counties')
   .then(mapData => map.drawMap())
 

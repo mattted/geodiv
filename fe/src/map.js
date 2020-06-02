@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import API from './api.js'
-import * as d3legend from 'd3-svg-legend'
+import MapLegend from './legend.js'
 
 export default class Map {
   constructor(height, width, element) {
@@ -13,9 +13,6 @@ export default class Map {
       .attr("width", this.width)
       .attr("height", this.height)
     this.boundary = this.svg.append('g').attr('class', 'boundary')
-    this.legendGroup = this.svg.append("g")
-      .attr("class", "legendGroup")
-      .attr("transform", `translate(20,${this.height-150})`)
     this.graticule = d3.geoGraticule()
       .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
       .step([5, 5]);
@@ -50,9 +47,9 @@ export default class Map {
     this.geoData.features.forEach(el => {
       el.properties.metric = this.metricData[el.id]
     })
-    let metex = d3.extent(Object.values(this.metricData))
+    this.metex = d3.extent(Object.values(this.metricData))
     this.colorScale = d3.scaleLog()
-      .domain([1, metex[1]])
+      .domain([1, this.metex[1]])
       .range(["#d0d0d0", "#3b4252"])
   }
 
@@ -79,12 +76,6 @@ export default class Map {
     }
   }
 
-  drawLegend() {
-    this.legendTitle = this.legendGroup.append('text')
-      .attr('class', 'legendTitle')
-      .text(`Observations of ${this.queryCol} ${this.querySearch}`)
-  }
-
   drawMap() {
     this.svg.selectAll('path')
       .data(this.graticule.lines())
@@ -95,6 +86,7 @@ export default class Map {
     this.boundary = this.svg.selectAll('.counties')
       .data(this.geoData.features)
 
+
     this.boundary.enter().append('path')
       .attr('class', 'counties')
       .attr('d', this.path)
@@ -102,6 +94,8 @@ export default class Map {
         if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
         return this.colorScale(d.properties.metric)
       })
+      // .on('mouseover', this.tip.show)
+      // .on('mouseout', this.tip.hide)
 
     this.boundary.exit().remove()
     
@@ -112,25 +106,10 @@ export default class Map {
         return this.colorScale(d.properties.metric)
       })
 
-    if(Object.entries(this.metricData).length !== 0) this.drawLegend()
+    if(Object.entries(this.metricData).length !== 0) {
+      this.legend = new MapLegend(this)
+      this.legend.drawLegend()
+    }
   }
 
-  drawLegend() {
-    this.logLegend = d3legend.legendColor()
-      // .orient('horizontal')
-      // .cells([1, 100, 1000, 5000, 10000])
-      .scale(this.colorScale)
-
-    this.legendGroup.call(this.logLegend)
-
-    this.legendTitle = this.legendGroup.append('text')
-      .attr('y', -20)
-      .attr('class', 'legend-title')
-      .text('Total Observations')
-
-    this.legendByline = this.legendGroup.append('text')
-      .attr('y', -6)
-      .attr('class', 'legend-byline')
-      .text(`${this.queryCol} ${this.querySearch}`)
-  }
 }
