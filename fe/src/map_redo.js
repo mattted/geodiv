@@ -13,19 +13,19 @@ export default class Map {
       .append("svg")
       .attr("width", this.width)
       .attr("height", this.height)
-    this.mapGroup = this.svg.append('g').attr('class', 'map-group')
+    this.mapGroup = this.svg.append('g').attr('class', 'mapGroup')
     this.graticule = d3.geoGraticule()
       .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
       .step([5, 5]);
-    this.metricData = {}
   }
 
-  // takes api endpoints geo and metric
-  async mountData(geo = 'none', metric = 'none') {
+  async mountData(geo = 'none', metric = 'none', points = 'none') {
     if(geo !== 'none') this.geoData = await API.fetchGeo(geo)
     if(metric !== 'none') this.metricData = await API.fetchMetric(metric)
-    if(this.metricData !== {}) this.bindMetric()
+    if(points !== 'none') this.pointData = await API.fetchGeo(points)
+    if(this.metricData !== undefined) this.bindMetric()
     this.setMetricName(metric)
+    this.setBounds(this.geoData)
     return this.geoData
   }
 
@@ -41,7 +41,6 @@ export default class Map {
       (this.height - s * (b[1][1] + b[0][1])) /2]
     // set overall projection scale
     this.projection.scale(s).translate(t)
-    return this.geoData
   }
 
   bindMetric() {
@@ -55,9 +54,7 @@ export default class Map {
   }
 
   setMetricName(metric){
-    if(metric === 'obs_per_county') this.queryCol = 'Total observations'
-    else if(metric === 'org_per_county') this.queryCol = 'Total unique organisms'
-    else if(metric === 'none') return
+    if(metric === 'none') return
     else {
       let url = metric.split(/[=?;]/)
       let search = url[2]
@@ -78,31 +75,19 @@ export default class Map {
   }
 
   drawGraticule() {
-    this.graticuleLines = this.svg.selectAll('.graticule')
+    this.svg.selectAll('path')
       .data(this.graticule.lines())
-
-    this.graticuleLines
       .enter().append('path')
       .attr('class', 'graticule')
       .attr('d', this.path)
-
-    this.graticuleLines.transition().duration(1000)
-      .attr('d', this.path)
-      .style('opacity', 100)
   }
 
-  drawMap(graticule=false) {
-    if(graticule === true) {
-      this.drawGraticule()
-    } else {
-      d3.selectAll('.graticule').style("opacity", 0)
-    }
-
-    this.mapGroup = this.svg.selectAll('.boundaries')
+  drawMap() {
+    this.boundary = this.svg.selectAll('.counties')
       .data(this.geoData.features)
 
-    this.mapGroup.enter().append('path')
-      .attr('class', 'boundaries')
+    this.boundary.enter().append('path')
+      .attr('class', 'counties')
       .attr('d', this.path)
       .attr('fill', d => {
         if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
@@ -111,9 +96,9 @@ export default class Map {
       // .on('mouseover', d => console.log(d))
       .on('click', d => this.focus(d)) 
 
-    this.mapGroup.exit().remove()
+    this.boundary.exit().remove()
     
-    this.mapGroup.transition().duration(1000)
+    this.boundary.transition().duration(1000)
       .attr('d', this.path)
       .attr('fill', d => {
         if(this.colorScale(d.properties.metric) == undefined) return "#f0f0f0"
@@ -129,7 +114,7 @@ export default class Map {
   focus(feature) {
     if(this.zoomed === feature) {
       this.setBounds(this.geoData)
-      this.drawMap(true, true)
+      this.drawMap()
       this.zoomed = !this.zoomed
     } else {
       this.setBounds(feature)

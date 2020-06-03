@@ -8,7 +8,8 @@ import Filter from './filter.js'
 // load map
 const map = new Map(400, 700, '#map')
 map.mountData('counties')
-  .then(mapData => map.drawMap())
+  .then(mapData => map.setBounds(mapData))
+  .then(mapData => map.drawMap(true))
 
 // load map datalist filters
 Filter.populateDatalist('kingdom')
@@ -33,5 +34,5 @@ document.querySelector('#mapfilter').addEventListener('select', e => {
   let search = e.target.value
   let column = document.querySelector('div.buttons').getAttribute('selected')
   map.mountData('none', `obs_by_query?search=${search};column=${column}`)
-    .then(mapData => map.drawMap())
+    .then(mapData => map.drawMap(true))
 });

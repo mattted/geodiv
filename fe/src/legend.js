@@ -3,7 +3,6 @@ import * as d3legend from 'd3-svg-legend'
 
 export default class MapLegend { 
   constructor(map) {
-    console.log('do we ever get here')
     this.map = map
     this.legendScale = d3.scaleLog()
       .domain([1, map.metex[1]])
