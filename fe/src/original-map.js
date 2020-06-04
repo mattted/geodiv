@@ -54,28 +54,6 @@ export default class Map {
       .range(["#d0d0d0", "#3b4252"])
   }
 
-  setMetricName(metric){
-    if(metric === 'obs_per_county') this.queryCol = 'Total observations'
-    else if(metric === 'org_per_county') this.queryCol = 'Total unique organisms'
-    else if(metric === 'none') return
-    else {
-      let url = metric.split(/[=?;]/)
-      let search = url[2]
-      let col = url[4]
-      switch(col) {
-        case 'klass':
-          col = 'Class'
-          break;
-        case 'cname':
-          col = 'Common Name'
-          break;
-        default:
-          col = col.charAt(0).toUpperCase() + col.slice(1)
-      }
-      this.queryCol = col
-      this.querySearch = search
-    }
-  }
 
   drawGraticule() {
     this.graticuleLines = this.svg.selectAll('.graticule')

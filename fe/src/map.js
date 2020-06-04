@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
-import scaleCluster from 'd3-scale-cluster';
 import API from './api.js'
+import MapLegend from './legend.js'
 
 export default class Map {
   constructor(opts) {
@@ -15,7 +15,6 @@ export default class Map {
 
     this.boundedWidth = this.width - this.margin.left - this.margin.right
     this.projection = opts.projection || d3.geoMercator()
-    // this.colorRange = [opts.color.start, opts.color.end] || ["#d0d0d0", "#3b4252"]
   } 
   
   createMapBounds(geo) {
@@ -41,15 +40,16 @@ export default class Map {
     this.geo = geo
     this.projection = this.projection.fitWidth(this.boundedWidth, this.geo)
 
-    if (geo.extent) {
-      this.colorScale = scaleCluster()
+    if (geo.domain) {
+      this.colo
+    Scale = d3.scaleLog()
         .domain(geo.extent)
-        .range(d3.range(10).map(i => d3.interpolateGnBu(i/10)))
-      console.log(this.colorScale(geo.extent[0]))
-      console.log(this.colorScale(geo.extent[1]))
+        .range(["#d0d0d0", "#3b4252"])
+      this.legend = new MapLegend(this) 
+      this.legend.drawLegend()
+    } else {
+      this.colorScale = () => "#d0d0d0"
     }
-    else
-      this.colorScale = () => "#3b4252"
 
     this.bounds.selectAll('.boundaries')
       .data(this.geo.features)
@@ -57,11 +57,17 @@ export default class Map {
         enter => enter.append('path')
           .attr('class', 'boundaries')
           .attr('d', this.pathGenerator)
-          .attr('fill', d => this.colorScale(d.properties.metric)),
+          .attr('fill', d => {
+            if(d.properties.metric) return this.colorScale(d.properties.metric)
+            else return "#d0d0d0"
+          }),
         update => update
           .attr('d', this.pathGenerator)
           .transition().duration(1000)
-          .attr('fill', d => this.colorScale(d.properties.metric)),
+          .attr('fill', d => {
+            if(d.properties.metric) return this.colorScale(d.properties.metric)
+            else return "#d0d0d0"
+          }),
         exit => exit
           .remove()
       )
@@ -75,9 +81,6 @@ export default class Map {
     mount.append('path')
       .attr('class', 'graticule')
       .attr('d', this.pathGenerator(geoGrat))
-  }
-
-  createColorScale(extent) {
   }
 
 }

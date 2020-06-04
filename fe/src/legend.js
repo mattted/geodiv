@@ -5,21 +5,25 @@ export default class MapLegend {
   constructor(map) {
     this.map = map
     this.legendScale = d3.scaleLog()
-      .domain([1, map.metex[1]])
+      .domain([1, map.geo.extent[1]])
     this.cellBins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] 
+    this.cellBins = [0, 0.2, 0.4, 0.6, 0.8, 1] 
     this.scaledCells = this.cellBins.map(cell => Math.round(this.legendScale.invert(cell)))
   }
 
   drawLegend() {
     // TODO: make custom legend
     d3.select(".legendGroup").remove()
-
-    this.legendGroup = this.map.svg.append("g")
+    this.legendGroup = this.map.wrapper.append("g")
       .attr("class", "legendGroup")
-      .attr("transform", `translate(20,${40})`)
+      .attr("transform", `translate(${this.map.width * 0.65}, 30)`)
 
     this.logLegend = d3legend.legendColor()
-      // .orient('horizontal')
+      .orient('horizontal')
+      .shapeWidth(30)
+      .shapeHeight(7)
+      .labelOffset(2)
+      .labelFormat(d3.format("0"))
       .cells(this.scaledCells)
       .scale(this.map.colorScale)
 
