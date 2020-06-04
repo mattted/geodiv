@@ -8,8 +8,12 @@ class ObservationsController < ApplicationController
     render json: Observation.org_per_county
   end
 
-  def obs_by_query
-    render json: Observation.obs_by_query(params["column"], params["search"])
+  def counties_obs_by_query
+    render json: Observation.counties_obs_by_query(params["column"], params["search"])
+  end
+
+  def states_obs_by_query
+    render json: Observation.states_obs_by_query(params["column"], params["search"])
   end
 
 end

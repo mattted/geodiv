@@ -18,9 +18,15 @@ class Observation < ApplicationRecord
     end
   end
 
-  def self.obs_by_query(column, searchable)
+  def self.counties_obs_by_query(column, searchable)
     Rails.cache.fetch("org_per_county_#{column}_#{searchable}", expires_in: 12.hours) do
       Observation.joins(:organism).where("organisms.#{column} = '#{searchable}'").group("county_id").count
+    end
+  end
+
+  def self.states_obs_by_query(column, searchable)
+    Rails.cache.fetch("org_per_state_#{column}_#{searchable}", expires_in: 12.hours) do
+      Observation.joins(:organism).joins(county: :state).where("organisms.#{column} = '#{searchable}'").group("states.id").count
     end
   end
 end
