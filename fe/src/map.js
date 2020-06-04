@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import API from './api.js'
+import DataMod from './datamod.js'
 import MapLegend from './legend.js'
 
 export default class Map {
@@ -41,14 +42,13 @@ export default class Map {
     this.projection = this.projection.fitWidth(this.boundedWidth, this.geo)
 
     if (geo.domain) {
-      this.colo
-    Scale = d3.scaleLog()
+      this.colorScale = d3.scaleLog()
         .domain(geo.extent)
         .range(["#d0d0d0", "#3b4252"])
       this.legend = new MapLegend(this) 
       this.legend.drawLegend()
     } else {
-      this.colorScale = () => "#d0d0d0"
+      this.colorScale = () => "#f0f0f0"
     }
 
     this.bounds.selectAll('.boundaries')
@@ -59,15 +59,21 @@ export default class Map {
           .attr('d', this.pathGenerator)
           .attr('fill', d => {
             if(d.properties.metric) return this.colorScale(d.properties.metric)
-            else return "#d0d0d0"
-          }),
+            else return "#f0f0f0"
+          })
+          .on('mouseover', this.renderTooltip)
+          .on('mouseout', this.removeTooltip),
+
         update => update
           .attr('d', this.pathGenerator)
+          .on('mouseover', this.renderTooltip)
+          .on('mouseout', this.removeTooltip)
           .transition().duration(1000)
           .attr('fill', d => {
             if(d.properties.metric) return this.colorScale(d.properties.metric)
-            else return "#d0d0d0"
+            else return "#f0f0f0"
           }),
+
         exit => exit
           .remove()
       )
@@ -81,6 +87,29 @@ export default class Map {
     mount.append('path')
       .attr('class', 'graticule')
       .attr('d', this.pathGenerator(geoGrat))
+  }
+
+  renderTooltip(d) {
+    d3.select(this)
+      .style("stroke", "#4C566A")
+      .style("stroke-width", "2px")
+    let maptip = document.querySelector('#maptip')
+    maptip.style.left = (d3.event.pageX + 30) + 'px'
+    maptip.style.top = (d3.event.pageY - 30) + 'px'
+    let {type, name, metric} = DataMod.getFeatureInfo(d)
+    maptip.innerHTML = `
+      <p>${name}</p>
+      <p>${metric}</p>
+      `
+    maptip.style.opacity = 100;
+  }
+
+  removeTooltip() {
+    d3.select(this)
+      .attr("stroke", "#4C566A")
+      .style("stroke-width", "0.1px")
+    let maptip = document.querySelector('#maptip')
+    maptip.style.opacity = 0;
   }
 
 }

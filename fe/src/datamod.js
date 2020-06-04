@@ -38,4 +38,11 @@ export default class DataMod {
     map.queryCol = col
     map.querySearch = search
   }
+
+  static getFeatureInfo(d) {
+    let type = d.properties.countyfp ? 'County' : 'State'
+    let name = d.properties.name
+    let metric = d.properties.metric ? d.properties.metric : 'None'
+    return {type, name, metric}
+  }
 }

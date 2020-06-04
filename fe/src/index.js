@@ -22,6 +22,7 @@ document.querySelectorAll('button.geo').forEach(button => button.addEventListene
   Array.from(e.target.parentElement.children).forEach(button => button.classList.add('is-outlined'))
   e.target.classList.remove('is-outlined')
   GEOTYPE = e.target.id 
+  d3.select(".legendSvg").remove()
   API.fetch(e.target.id)
     .then(data => map.renderBasicMap(data))
 }))
