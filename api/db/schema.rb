@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_27_025843) do
+ActiveRecord::Schema.define(version: 2020_06_05_190631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2020_05_27_025843) do
     t.bigint "organism_id"
     t.bigint "county_id"
     t.index ["county_id"], name: "index_observations_on_county_id"
+    t.index ["date"], name: "index_observations_on_date"
     t.index ["geom"], name: "index_observations_on_geom", using: :gist
     t.index ["organism_id"], name: "index_observations_on_organism_id"
   end

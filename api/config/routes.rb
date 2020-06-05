@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     get 'counties_obs', to: 'counties#counties_obs'
     get 'obs_per_county', to: 'observations#obs_per_county'
     get 'org_per_county', to: 'observations#org_per_county'
+    get 'obs_for_inforec', to: 'observations#obs_for_inforec'
     get 'counties_obs_by_query', to: 'observations#counties_obs_by_query'
     get 'states_obs_by_query', to: 'observations#states_obs_by_query'
     get 'kingdom', to: 'organisms#kingdom'

@@ -30,7 +30,8 @@ class Observation < ApplicationRecord
     end
   end
 
-  def self.obs_for_inforec(column, searchable, geo)
-    
+  def self.obs_for_inforec(column, searchable)
+    selection = 'observations.date, counties.name, states.name as state, organisms.*, observations.inat'
+    Observation.joins(:organism).joins(county: :state).select(selection).where("organisms.#{column} = '#{searchable}'").order(date: :desc).page(1).per(20)
   end
 end

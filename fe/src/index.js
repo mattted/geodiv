@@ -23,6 +23,7 @@ document.querySelectorAll('button.geo').forEach(button => button.addEventListene
   e.target.classList.remove('is-outlined')
   GEOTYPE = e.target.id 
   d3.select(".legendSvg").remove()
+  // TODO: make geo switch taking the current map state into account
   API.fetch(e.target.id)
     .then(data => map.renderBasicMap(data))
 }))
@@ -39,9 +40,11 @@ document.querySelector('#mapfilter').addEventListener('select', e => {
   let search = e.target.value
   let column = document.querySelector('div.buttons').getAttribute('selected')
   let geourl = `${GEOTYPE}_obs_by_query?search=${search};column=${column}`
-  let tableurl = `obs_for_table?search=${search};column=${column};geo=${GEOTYPE}`
+  let inforec = `obs_for_inforec?search=${search};column=${column}`
   DataMod.setMetricName(geourl, map)
   API.fetch(geourl)
     .then(metric => DataMod.zip(map.geo, metric))
     .then(geo => map.renderBasicMap(geo))
+  API.fetch(inforec)
+    .then(data => console.log(data))
 });
