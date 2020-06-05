@@ -7,15 +7,14 @@ export default class MapLegend {
     this.legendScale = d3.scaleLog()
       .domain([1, map.geo.extent[1]])
     // this.cellBins = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] 
-    this.cellBins = [0, 0.2, 0.4, 0.6, 0.8, 1] 
+    this.cellBins = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] 
     this.scaledCells = this.cellBins.map(cell => Math.round(this.legendScale.invert(cell)))
   }
 
   drawLegend() {
-    // TODO: make custom legend
     d3.select(".legendSvg").remove()
     this.legendSvg = d3.select(this.map.domElement).append("svg")
-      .attr("class", "legendSvg")
+      .attr("class", "legendSvg level")
       .attr('width', this.map.width)
       .attr('height', '60px')
 
@@ -25,15 +24,14 @@ export default class MapLegend {
 
     this.legendGroupCells = this.legendGroup.append('g')
       .attr('class', 'legendCells')
-      .attr('transform', 'translate(-95, 0)') 
-
-    console.log(this.legendGroup)
+      .attr('transform', 'translate(-155, 0)') 
 
     this.logLegend = d3legend.legendColor()
       .orient('horizontal')
       .shapeWidth(30)
       .shapeHeight(7)
       .labelOffset(2)
+      .labelAlign('end')
       .labelFormat(d3.format("0"))
       .cells(this.scaledCells)
       .scale(this.map.colorScale)

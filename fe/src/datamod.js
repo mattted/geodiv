@@ -35,6 +35,7 @@ export default class DataMod {
       default:
         col = col.charAt(0).toUpperCase() + col.slice(1)
     }
+    console.log(url)
     map.queryCol = col
     map.querySearch = search
   }

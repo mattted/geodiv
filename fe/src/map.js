@@ -26,6 +26,7 @@ export default class Map {
     
     this.wrapper = d3.select(this.domElement)
       .append('svg')
+      .attr('class', 'level')
       .attr('width', this.width)
       .attr('height', this.height)
 
@@ -43,12 +44,11 @@ export default class Map {
 
     if (geo.domain) {
       this.colorScale = d3.scaleLog()
-        .domain(geo.extent)
-        .range(["#d0d0d0", "#3b4252"])
+        .domain([1,geo.extent[1]])
+        .interpolate(d3.interpolateHcl)
+        .range(["#ECEFF4", "#4C566A"])
       this.legend = new MapLegend(this) 
       this.legend.drawLegend()
-    } else {
-      this.colorScale = () => "#f0f0f0"
     }
 
     this.bounds.selectAll('.boundaries')
@@ -59,7 +59,7 @@ export default class Map {
           .attr('d', this.pathGenerator)
           .attr('fill', d => {
             if(d.properties.metric) return this.colorScale(d.properties.metric)
-            else return "#f0f0f0"
+            else return "#ECEFF4"
           })
           .on('mouseover', this.renderTooltip)
           .on('mouseout', this.removeTooltip),
@@ -71,7 +71,7 @@ export default class Map {
           .transition().duration(1000)
           .attr('fill', d => {
             if(d.properties.metric) return this.colorScale(d.properties.metric)
-            else return "#f0f0f0"
+            else return "#ECEFF4"
           }),
 
         exit => exit
@@ -84,9 +84,19 @@ export default class Map {
       .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
       .step([5, 5]);
 
-    mount.append('path')
-      .attr('class', 'graticule')
-      .attr('d', this.pathGenerator(geoGrat))
+    this.bounds.selectAll('.graticule')
+      .data(geoGrat.lines())
+      .join(
+        enter => enter.append('path')
+          .attr('class', 'graticule')
+          .attr('d', this.pathGenerator),
+        update => update
+          .transition().duration(1000)
+          .attr('d', this.pathGenerator),
+        exit => exit
+          .remove()
+      )
+
   }
 
   renderTooltip(d) {
