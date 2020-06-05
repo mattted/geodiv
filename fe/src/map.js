@@ -87,7 +87,7 @@ export default class Map {
       .extent([[-98 - 80, 38 - 45], [-98 + 35, 38 + 45]])
       .step([5, 5]);
 
-    this.bounds.selectAll('.graticule')
+    mount.selectAll('.graticule')
       .data(geoGrat.lines())
       .join(
         enter => enter.append('path')

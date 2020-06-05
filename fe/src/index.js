@@ -46,5 +46,5 @@ document.querySelector('#mapfilter').addEventListener('select', e => {
     .then(metric => DataMod.zip(map.geo, metric))
     .then(geo => map.renderBasicMap(geo))
   API.fetch(inforec)
-    .then(data => console.log(data))
+    .then(data => DataMod.processInforec(data))
 });

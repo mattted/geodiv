@@ -45,4 +45,8 @@ export default class DataMod {
     let metric = d.properties.metric ? d3.format(",")(d.properties.metric) : 'None'
     return {type, name, metric}
   }
+
+  static populateInforec(data){
+    console.log(data) 
+  }
 }
