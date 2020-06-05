@@ -38,9 +38,10 @@ document.querySelector('#mapfilter').addEventListener('select', e => {
   // document.querySelector('#mapfilter').value = ''
   let search = e.target.value
   let column = document.querySelector('div.buttons').getAttribute('selected')
-  let url = `${GEOTYPE}_obs_by_query?search=${search};column=${column}`
-  DataMod.setMetricName(url, map)
-  API.fetch(url)
+  let geourl = `${GEOTYPE}_obs_by_query?search=${search};column=${column}`
+  let tableurl = `obs_for_table?search=${search};column=${column};geo=${GEOTYPE}`
+  DataMod.setMetricName(geourl, map)
+  API.fetch(geourl)
     .then(metric => DataMod.zip(map.geo, metric))
     .then(geo => map.renderBasicMap(geo))
 });

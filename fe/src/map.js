@@ -40,19 +40,22 @@ export default class Map {
 
   renderBasicMap(geo) {
     this.geo = geo
-    this.projection = this.projection.fitWidth(this.boundedWidth, this.geo)
+    this.features = geo.type === 'FeatureCollection' ? geo.features : [geo]
+
+    this.projection = this.projection.fitSize([this.boundedWidth, this.boundedHeight], this.geo)
+    this.pathGenerator = d3.geoPath(this.projection)
 
     if (geo.domain) {
       this.colorScale = d3.scaleLog()
         .domain([1,geo.extent[1]])
-        .interpolate(d3.interpolateHcl)
+        .interpolate(d3.interpolateHclLong)
         .range(["#ECEFF4", "#4C566A"])
       this.legend = new MapLegend(this) 
       this.legend.drawLegend()
     }
 
     this.bounds.selectAll('.boundaries')
-      .data(this.geo.features)
+      .data(this.features)
       .join(
         enter => enter.append('path')
           .attr('class', 'boundaries')
@@ -121,5 +124,4 @@ export default class Map {
     let maptip = document.querySelector('#maptip')
     maptip.style.opacity = 0;
   }
-
 }

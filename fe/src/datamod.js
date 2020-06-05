@@ -43,7 +43,7 @@ export default class DataMod {
   static getFeatureInfo(d) {
     let type = d.properties.countyfp ? 'County' : 'State'
     let name = d.properties.name
-    let metric = d.properties.metric ? d.properties.metric : 'None'
+    let metric = d.properties.metric ? d3.format(",")(d.properties.metric) : 'None'
     return {type, name, metric}
   }
 }

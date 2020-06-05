@@ -16,4 +16,12 @@ class ObservationsController < ApplicationController
     render json: Observation.states_obs_by_query(params["column"], params["search"])
   end
 
+  def obs_for_table
+
+  end
+
+  def index
+    render json: ObservationSerializer.new(Observation.page(1).per(1000))
+  end
+
 end

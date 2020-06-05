@@ -29,4 +29,8 @@ class Observation < ApplicationRecord
       Observation.joins(:organism).joins(county: :state).where("organisms.#{column} = '#{searchable}'").group("states.id").count
     end
   end
+
+  def self.obs_for_inforec(column, searchable, geo)
+    
+  end
 end

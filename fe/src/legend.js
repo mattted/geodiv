@@ -24,15 +24,15 @@ export default class MapLegend {
 
     this.legendGroupCells = this.legendGroup.append('g')
       .attr('class', 'legendCells')
-      .attr('transform', 'translate(-155, 0)') 
+      .attr('transform', 'translate(-205, 0)') 
 
     this.logLegend = d3legend.legendColor()
       .orient('horizontal')
-      .shapeWidth(30)
+      .shapeWidth(40)
       .shapeHeight(7)
       .labelOffset(2)
       .labelAlign('end')
-      .labelFormat(d3.format("0"))
+      .labelFormat(d3.format(","))
       .cells(this.scaledCells)
       .scale(this.map.colorScale)
 

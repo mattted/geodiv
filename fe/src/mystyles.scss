@@ -39,7 +39,7 @@ $family-sans-serif: "Fira Sans Extra Condensed", "sans-serif";
 .graticule {
   fill: none;
   stroke: $nord4;
-  stroke-width: .5px;
+  stroke-width: 0.4px;
 }
 
 .boundaries {
@@ -53,6 +53,10 @@ $family-sans-serif: "Fira Sans Extra Condensed", "sans-serif";
 
 .legend-byline {
   font-size: 0.7rem;
+}
+
+#infotables.column {
+  background-color: red;
 }
 
 #maptip {
