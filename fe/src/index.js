@@ -1,6 +1,7 @@
 require('./mystyles.scss')
 import "@babel/polyfill";
 import Map from './map.js'
+import Recents from './recents.js'
 import API from './api.js'
 import DataMod from './datamod.js'
 import * as d3 from 'd3';
@@ -36,7 +37,6 @@ document.querySelectorAll('button.filter').forEach(button => button.addEventList
 }))
 
 document.querySelector('#mapfilter').addEventListener('select', e => {
-  // document.querySelector('#mapfilter').value = ''
   let search = e.target.value
   let column = document.querySelector('div.buttons').getAttribute('selected')
   let geourl = `${GEOTYPE}_obs_by_query?search=${search};column=${column}`
@@ -46,5 +46,11 @@ document.querySelector('#mapfilter').addEventListener('select', e => {
     .then(metric => DataMod.zip(map.geo, metric))
     .then(geo => map.renderBasicMap(geo))
   API.fetch(inforec)
-    .then(data => DataMod.processInforec(data))
+    .then(data => new Recents(data, map.queryCol, map.querySearch))
+    .then(node => {
+      let recentInfo = document.querySelector("#inforec")
+      recentInfo.innerHTML = ''
+      recentInfo.appendChild(node.frag)
+    })
+  document.querySelector('#mapfilter').value = ''
 });

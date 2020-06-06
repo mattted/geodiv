@@ -46,7 +46,4 @@ export default class DataMod {
     return {type, name, metric}
   }
 
-  static populateInforec(data){
-    console.log(data) 
-  }
 }

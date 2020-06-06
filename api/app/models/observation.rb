@@ -32,6 +32,8 @@ class Observation < ApplicationRecord
 
   def self.obs_for_inforec(column, searchable)
     selection = 'observations.date, counties.name, states.name as state, organisms.*, observations.inat'
-    Observation.joins(:organism).joins(county: :state).select(selection).where("organisms.#{column} = '#{searchable}'").order(date: :desc).page(1).per(20)
+    Observation.joins(:organism).joins(county: :state).select(selection)
+      .where("organisms.#{column} = '#{searchable}' and observations.date is not null")
+      .order(date: :desc).page(1).per(20)
   end
 end
