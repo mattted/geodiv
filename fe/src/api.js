@@ -7,9 +7,29 @@ export default class API {
       let data = await response.json()
       return data
     } catch(err) {
-      // TODO: Handle Error
+      console.log(err);
       alert(err)
+      return err;
     }
   }
-}
 
+  static async post(end, obj) {
+    let conf = {
+      method: "Post",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(obj),
+    };
+    try {
+      const response = await fetch(this.URL+end, conf);
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.log(err);
+      alert(err)
+      return err;
+    }
+  }    
+}

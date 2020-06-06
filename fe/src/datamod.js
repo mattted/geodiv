@@ -10,9 +10,9 @@ export default class DataMod {
     return geo
   }
 
-  static async populateDatalist(type) {
+  static async populateDatalist(type, target) {
     let listItems = await API.fetch(type)  
-    let dataList = document.querySelector(`#mapdatalist`)
+    let dataList = document.querySelector(target)
     let options;
     for (const item of listItems) {
       options += `<option value="${item}" />`

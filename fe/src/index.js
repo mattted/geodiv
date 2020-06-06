@@ -1,6 +1,7 @@
 require('./mystyles.scss')
 import "@babel/polyfill";
 import Map from './map.js'
+import Form from './forms.js'
 import Recents from './recents.js'
 import API from './api.js'
 import DataMod from './datamod.js'
@@ -13,13 +14,22 @@ const map = new Map({
   projection: d3.geoAlbersUsa()
 });
 
+const map_test = new Map({
+  domElement: '#maptip',
+  projection: d3.geoAlbersUsa()
+});
+
 API.fetch('counties')
   .then(data => map.createMapBounds(data).renderBasicMap(data))
 
 // load map datalist filters
-DataMod.populateDatalist('kingdom')
+DataMod.populateDatalist('kingdom', '#mapdatalist')
 
-document.querySelector("#test").addEventListener('click', e => document.querySelector(".modal").classList.add("is-active"))
+document.querySelector("#test").addEventListener('click', e => {
+  let form = new Form('obs', '.modal-content')
+  document.querySelector(".modal").classList.add("is-active")
+})
+
 document.querySelector(".modal-close").addEventListener('click', e => document.querySelector(".modal").classList.remove("is-active"))
 
 document.querySelectorAll('button.geo').forEach(button => button.addEventListener('click', e => {
@@ -36,7 +46,8 @@ document.querySelectorAll('button.filter').forEach(button => button.addEventList
   Array.from(e.target.parentElement.children).forEach(button => button.classList.add('is-outlined'))
   document.querySelector('#mapfilter').value = ''
   e.target.classList.remove('is-outlined')
-  DataMod.populateDatalist(e.target.id)
+  console.log(e.target.id)
+  DataMod.populateDatalist(e.target.id, '#mapdatalist')
 }))
 
 document.querySelector('#mapfilter').addEventListener('select', e => {

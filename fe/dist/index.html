@@ -20,7 +20,7 @@
   </div>
   <div class="container control">
     <div class="columns is-centered">
-      <div class="column is-four-fifths">
+      <div class="column is-three-fifths">
         <div class="buttons are-small filterSelect is-centered">
           <button id="kingdom" class="filter button is-primary">Kingdom</button>
           <button id="phylum" class="filter button is-outlined is-primary">Phylum</button>
@@ -30,7 +30,7 @@
           <button id="genus" class="filter button is-outlined is-primary">Genus</button>
           <button id="species" class="filter button is-outlined is-primary">Species</button>
           <button id="cname" class="filter button is-outlined is-primary">Common Name</button>
-          <input id="mapfilter" class="input filter" list="mapdatalist" placeholder="Select above and search...">
+          <input id="mapfilter" class="input filter is-small" list="mapdatalist" placeholder="Select above and search...">
         </div>
       </div>
     </div>
@@ -42,18 +42,16 @@
     <div id="maptip"></div>
   </div>
   <div id="infotables" class="columns is-centered">
-    <!-- <div id="infogen" class="column"></div> -->    
-    <!-- <div id="infogeo" class="column"></div> -->    
-    <div id="inforec" class="column is-four-fifths"></div>    
+    <div id="inforec" class="column is-full"></div>    
   </div>
   <div class="modal">
     <div class="modal-background"></div>
     <div class="modal-content">
-      <p>THIS IS A MODAL TEST</p>
     </div>
     <button class="modal-close is-small" aria-label="close"></button>
   </div>
   <datalist id="mapdatalist"></datalist>
+  <datalist id="formdatalist"></datalist>
   <script src="./bundle.js"></script> 
 </body>
 </html>
