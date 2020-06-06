@@ -99,7 +99,6 @@ export default class Map {
         exit => exit
           .remove()
       )
-
   }
 
   renderTooltip(d) {

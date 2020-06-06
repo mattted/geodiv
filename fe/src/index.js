@@ -19,6 +19,9 @@ API.fetch('counties')
 // load map datalist filters
 DataMod.populateDatalist('kingdom')
 
+document.querySelector("#test").addEventListener('click', e => document.querySelector(".modal").classList.add("is-active"))
+document.querySelector(".modal-close").addEventListener('click', e => document.querySelector(".modal").classList.remove("is-active"))
+
 document.querySelectorAll('button.geo').forEach(button => button.addEventListener('click', e => {
   Array.from(e.target.parentElement.children).forEach(button => button.classList.add('is-outlined'))
   e.target.classList.remove('is-outlined')
