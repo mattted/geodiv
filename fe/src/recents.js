@@ -32,8 +32,8 @@ export default class Recents {
         <th>County</th>
         <th>State</th>
         <th>Kingdom</th>
-        <th>Class</th>
         <th>Phylum</th>
+        <th>Class</th>
         <th>Order</th>
         <th>Family</th>
         <th>Genus</th>
@@ -53,8 +53,8 @@ export default class Recents {
       row.innerHTML += `<td>${el.name}</td>`
       row.innerHTML += `<td>${el.state}</td>`
       row.innerHTML += `<td>${el.kingdom}</td>`
-      row.innerHTML += `<td>${el.klass}</td>`
       row.innerHTML += `<td>${el.phylum}</td>`
+      row.innerHTML += `<td>${el.klass}</td>`
       row.innerHTML += `<td>${el.order}</td>`
       row.innerHTML += `<td>${el.family}</td>`
       row.innerHTML += `<td>${el.genus}</td>`

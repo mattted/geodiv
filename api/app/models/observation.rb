@@ -36,4 +36,16 @@ class Observation < ApplicationRecord
       .where("organisms.#{column} = '#{searchable}' and observations.date is not null")
       .order(date: :desc).page(1).per(20)
   end
+
+  def self.obs_for_inforec_by_geom(column, searchable, geotype, geoid)
+    if geotype == "state"
+      sql_where = "organisms.#{column} = '#{searchable}' and observations.date is not null and states.id = '#{geoid}'"
+    else
+      sql_where = "organisms.#{column} = '#{searchable}' and observations.date is not null and counties.id = '#{geoid}'"
+    end
+    selection = 'observations.date, counties.name, states.name as state, organisms.*, observations.inat'
+    Observation.joins(:organism).joins(county: :state).select(selection)
+      .where(sql_where)
+      .order(date: :desc).page(1).per(20)
+  end
 end

@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import API from './api.js'
 import DataMod from './datamod.js'
 import MapLegend from './legend.js'
+import Recents from './recents.js'
 
 export default class Map {
   constructor(opts) {
@@ -64,6 +65,7 @@ export default class Map {
             if(d.properties.metric) return this.colorScale(d.properties.metric)
             else return "#ECEFF4"
           })
+          .on('click', this.changeTable)
           .on('mouseover', this.renderTooltip)
           .on('mouseout', this.removeTooltip),
 
@@ -122,5 +124,57 @@ export default class Map {
       .style("stroke-width", "0.1px")
     let maptip = document.querySelector('#maptip')
     maptip.style.opacity = 0;
+  }
+
+  changeTable(e) {
+    let col = document.querySelector('button.filter:not(.is-outlined)').id
+    let search;
+    let geotype = Object.keys(e.properties).includes('usps') ? "state" : "county"
+    let geoid = e.id
+    let displayName;
+    switch(col) {
+      case 'kingdom':
+        search = document.querySelectorAll('td')[3].textContent
+        displayName = 'Kingdom'
+        break;
+      case 'phylum':
+        search = document.querySelectorAll('td')[4].textContent
+        displayName = 'Phylum'
+        break;
+      case 'klass':
+        search = document.querySelectorAll('td')[5].textContent
+        displayName = 'Class'
+        break;
+      case 'order':
+        search = document.querySelectorAll('td')[6].textContent
+        displayName = 'Order'
+        break;
+      case 'family':
+        search = document.querySelectorAll('td')[7].textContent
+        displayName = 'Family'
+        break;
+      case 'genus':
+        search = document.querySelectorAll('td')[8].textContent
+        displayName = 'Genus'
+        break;
+      case 'species':
+        search = document.querySelectorAll('td')[9].textContent
+        displayName = 'Species'
+        break;
+      case 'cname':
+        search = document.querySelectorAll('td')[10].textContent
+        displayName = 'Common Name'
+        break;
+      default:
+        search = 'none'
+    }
+    let url = `obs_for_inforec?search=${search};column=${col};geotype=${geotype};geoid=${geoid}` 
+    API.fetch(url)
+      .then(data => new Recents(data, displayName, search))
+      .then(node => {
+        let recentInfo = document.querySelector("#inforec")
+        recentInfo.innerHTML = ''
+        recentInfo.appendChild(node.frag)
+      })
   }
 }
