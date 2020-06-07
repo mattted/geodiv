@@ -1,4 +1,5 @@
 import DataMod from './datamod.js'
+import API from './api.js'
 
 export default class Form {
   constructor(type, target) {
@@ -28,7 +29,7 @@ export default class Form {
     this.form.appendChild(this.createLabel('Organism'))
     this.form.appendChild(this.createInput({ type: 'text', placeholder: 'Select name...', list: 'formdatalist', id: 'obs_form_name' }))
     this.form.appendChild(this.createInput({type: 'submit'}))
-    this.form.addEventListener('submit', this.submitObs)
+    this.form.addEventListener('submit', (e) => this.submitObs(e), false)
     this.node.innerHTML = ''
     this.node.appendChild(this.form)
   }
@@ -67,7 +68,7 @@ export default class Form {
     return menu
   }
 
-  submitObs(e) {
+  async submitObs(e) {
     e.preventDefault()
     let obj = {
       date: e.target.querySelector('#obs_form_date').value,
@@ -76,7 +77,23 @@ export default class Form {
       col: e.target.querySelector('select').value,
       name: e.target.querySelector('#obs_form_name').value,
     }
-    debugger 
+    let resp = await API.post('observations', obj)
+      .then(resp => resp)
+    if(Object.keys(resp).includes('errors')) this.renderErrors(resp)
+    else this.renderSuccess(resp)
+  }
+
+  renderErrors(resp) {
+    let errors = document.createElement('div')
+    errors.setAttribute('class', 'form-errors')
+    errors.innerHTML = resp.errors
+    this.node.insertBefore(errors, this.node.firstChild); 
+  }
+
+  renderSuccess(resp) {
+    // TODO: Need success message
+    document.querySelector(".modal").classList.remove("is-active")
+    this.node.innerHTML = ''
   }
   
 }

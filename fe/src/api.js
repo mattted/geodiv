@@ -21,14 +21,13 @@ export default class API {
         Accept: "application/json",
       },
       body: JSON.stringify(obj),
-    };
+    }
     try {
-      const response = await fetch(this.URL+end, conf);
+      const response = await fetch(this.url+end, conf);
       const data = await response.json();
       return data;
     } catch (err) {
       console.log(err);
-      alert(err)
       return err;
     }
   }    

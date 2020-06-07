@@ -24,4 +24,24 @@ class ObservationsController < ApplicationController
     render json: ObservationSerializer.new(Observation.page(1).per(1000))
   end
 
+  def create
+    geo_factory = RGeo::Geographic.spherical_factory(srid: 4269)
+    obs = Observation.new(obs_params)
+    obs.geom = geo_factory.point(obs.lon, obs.lat)
+    obs.county = County.find{ |c| c.geom.contains?(obs.geom) }
+    obs.organism = Organism.find_by(params["col"].to_sym => params["name"])
+
+    if obs.save
+      render json: obs
+    else 
+      render json: { errors: obs.errors.full_messages.join(', '), status: :unprocessable_entity }
+    end
+  end
+
+  private
+
+    def obs_params
+      params.require(:observation).permit(:date, :lat, :lon)
+    end
+
 end
