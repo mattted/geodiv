@@ -168,13 +168,17 @@ export default class Map {
       default:
         search = 'none'
     }
-    let url = `obs_for_inforec?search=${search};column=${col};geotype=${geotype};geoid=${geoid}` 
-    API.fetch(url)
-      .then(data => new Recents(data, displayName, search))
-      .then(node => {
-        let recentInfo = document.querySelector("#inforec")
-        recentInfo.innerHTML = ''
-        recentInfo.appendChild(node.frag)
-      })
+    if (e.properties.metric !== undefined) {
+      let url = `obs_for_inforec?search=${search};column=${col};geotype=${geotype};geoid=${geoid}` 
+      API.fetch(url)
+        .then(data => new Recents(data, displayName, search))
+        .then(node => {
+          let recentInfo = document.querySelector("#inforec")
+          recentInfo.innerHTML = ''
+          recentInfo.appendChild(node.frag)
+        })
+        .then(() => document.querySelector(".info-title").textContent += ` in ${e.properties.name} ${geotype.charAt(0).toUpperCase() + geotype.slice(1)}`)
+        // .then(document.querySelector(".info-title").textContent += ` in ${e.properties.name}`)
+      }
   }
 }
