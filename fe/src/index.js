@@ -14,18 +14,13 @@ const map = new Map({
   projection: d3.geoAlbersUsa()
 });
 
-const map_test = new Map({
-  domElement: '#maptip',
-  projection: d3.geoAlbersUsa()
-});
-
 API.fetch('counties')
   .then(data => map.createMapBounds(data).renderBasicMap(data))
 
 // load map datalist filters
 DataMod.populateDatalist('kingdom', '#mapdatalist')
 
-document.querySelector("#test").addEventListener('click', e => {
+document.querySelector("#add-obs").addEventListener('click', e => {
   let form = new Form('obs', '.modal-content')
   document.querySelector(".modal").classList.add("is-active")
 })

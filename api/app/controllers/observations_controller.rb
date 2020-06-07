@@ -34,7 +34,17 @@ class ObservationsController < ApplicationController
     if obs.save
       render json: obs
     else 
-      render json: { errors: obs.errors.full_messages.join(', '), status: :unprocessable_entity }
+      error_messages = obs.errors.full_messages.map do |error|
+        if error == "County must exist"
+          val = "Latitude/Longitude must be within the United States"
+        elsif error == "Organism must exist"
+          val = "Organism searched for/selected from menu"
+        else
+          val = error
+        end
+        val
+      end
+      render json: { errors: error_messages.join(', '), status: :unprocessable_entity }
     end
   end
 

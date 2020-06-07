@@ -101,3 +101,35 @@ th, td {
   padding: 10px;
 }
 
+.message {
+  font-size: 0.7rem;
+}
+
+.add-record {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+button.geo {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#submit-form {
+  margin-top: 15px;  
+  color: white;
+  background-color: $nord3;
+}
+
+#map-options {
+  margin: 10px;
+  padding: 2px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+.field .label.label {
+  margin-top: 10px;
+  margin-bottom: 2px;
+}
+

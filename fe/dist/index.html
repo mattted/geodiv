@@ -11,10 +11,16 @@
     <h1 class="title">GeoDiv</h1>
     <p class="subtitle">Geographic display of biodiversity observations from <a href="https://www.inaturalist.org">iNaturalist</a></p>
     <div class="columns is-centered">
-      <div class="column">
-        <button class="geo button is-outlined is-success is-small" id="states">By State</button>
-        <button class="geo button is-success is-small" id="counties">By County</button>
-        <button class="button is-danger is-small" id="test">Testing</button>
+      <div class="column is-two-fifths">
+        <div class="level">
+            <button class="add-record button level-item is-success is-small" id="add-obs">+ Add Observation +</button>
+            <!-- <button class="add-record button level-item is-success is-small" id="add-org">Add Organism</button> -->
+        </div>
+        <p id="map-options" class="notification is-primary is-light">Map Options</p>
+        <div class="level">
+            <button class="geo button level-item is-outlined is-info is-small" id="states">By State</button>
+            <button class="geo button level-item is-info is-small" id="counties">By County</button>
+        </div>
       </div>
     </div>
   </div>

@@ -18,26 +18,26 @@ export default class Form {
     this.form.appendChild(this.createLabel('Date'))
     this.form.appendChild(this.createInput({ type: 'date', id: 'obs_form_date'}))
     this.form.appendChild(this.createLabel('Latitude'))
-    this.form.appendChild(this.createInput({ type: 'number', placeholder: '41.8781', id: 'obs_form_lat' }))
+    this.form.appendChild(this.createInput({ type: 'number', step: 0.0000001, placeholder: '41.8781', id: 'obs_form_lat' }))
     this.form.appendChild(this.createLabel('Longitude'))
-    this.form.appendChild(this.createInput({ type: 'number', step: 0.0001, placeholder: '-87.6298', id: 'obs_form_lon' }))
+    this.form.appendChild(this.createInput({ type: 'number', step: 0.000001, placeholder: '-87.6298', id: 'obs_form_lon' }))
     this.form.appendChild(this.createLabel('Identifier'))
     this.form.appendChild(this.createSelect({ 
       options: [['Species', 'species'], ['Common Name', 'cname']], 
       datalist: '#formdatalist',
     }))
     this.form.appendChild(this.createLabel('Organism'))
-    this.form.appendChild(this.createInput({ type: 'text', placeholder: 'Select name...', list: 'formdatalist', id: 'obs_form_name' }))
-    this.form.appendChild(this.createInput({type: 'submit'}))
+    this.form.appendChild(this.createInput({ type: 'text', placeholder: 'Search for organism...', list: 'formdatalist', id: 'obs_form_name' }))
+    this.form.appendChild(this.createInput({type: 'submit', id: 'submit-form'}))
     this.form.addEventListener('submit', (e) => this.submitObs(e), false)
     this.node.innerHTML = ''
     this.node.appendChild(this.form)
   }
 
-  createLabel(title) {
+  createLabel(text) {
     let label = document.createElement('label')
     label.setAttribute('class', 'label')
-    label.textContent = title
+    label.textContent = text
     return label
   }
 
@@ -47,6 +47,7 @@ export default class Form {
     input.setAttribute('id', id)
     input.classList.add('is-small')
     input.setAttribute('type', type)
+    step ? input.setAttribute('step', step) : ''
     placeholder ? input.setAttribute('placeholder', placeholder) : ''
     list ? input.setAttribute('list', list) : ''
     return input
@@ -84,16 +85,37 @@ export default class Form {
   }
 
   renderErrors(resp) {
-    let errors = document.createElement('div')
-    errors.setAttribute('class', 'form-errors')
-    errors.innerHTML = resp.errors
+    if (this.node.querySelector('.message')) this.node.querySelector('.message').remove()
+    let errors = this.createMessageBox()
+    errors.classList.add('is-danger')
+    errors.querySelector('.message-header').textContent = 'Submission Error(s)'
+    errors.querySelector('.message-body').textContent = resp.errors
     this.node.insertBefore(errors, this.node.firstChild); 
   }
 
   renderSuccess(resp) {
-    // TODO: Need success message
-    document.querySelector(".modal").classList.remove("is-active")
-    this.node.innerHTML = ''
+    if (this.node.querySelector('.message')) this.node.querySelector('.message').remove()
+    let success = this.createMessageBox()
+    success.classList.add('is-success')
+    success.querySelector('.message-header').textContent = 'Submission Succeeded'
+    success.querySelector('.message-body').textContent =  'Observation added to database'
+    this.node.insertBefore(success, this.node.firstChild); 
+    setTimeout(() => {
+      document.querySelector(".modal").classList.remove("is-active")
+      this.node.innerHTML = ''
+    }, 2000)
+  }
+
+  createMessageBox() {
+    let box = document.createElement('article')
+    box.setAttribute('class', 'message')
+    let header = document.createElement('div')
+    header.setAttribute('class', 'message-header')
+    let message = document.createElement('div')
+    message.setAttribute('class', 'message-body')
+    box.appendChild(header)
+    box.appendChild(message)
+    return box
   }
   
 }
