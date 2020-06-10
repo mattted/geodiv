@@ -1,11 +1,29 @@
 export default class Recents {
   constructor(obs, col, search) {
-    this.obs = obs 
+    this.obs = obs
     this.column = col
     this.search = search
     this.frag = document.createDocumentFragment()
 
     this.createTitle()
+  }
+
+  static sort(e) {
+    let col = Array.from(document.querySelectorAll('th')).findIndex(el => el.textContent === e.target.textContent)
+    let rows = Array.from(document.querySelectorAll('tr')).slice(1)
+    let sortedRows = rows.sort((a,b) => {
+      let nameA = a.childNodes[col].textContent
+      let nameB = b.childNodes[col].textContent
+      if (nameA < nameB) {
+        return -1;
+      } else if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    })
+    let tbody = document.querySelector('tbody')
+    tbody.innerHTML = ''
+    sortedRows.forEach(row => tbody.appendChild(row)) 
   }
 
   createTitle() {

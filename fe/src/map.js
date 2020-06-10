@@ -176,6 +176,7 @@ export default class Map {
           let recentInfo = document.querySelector("#inforec")
           recentInfo.innerHTML = ''
           recentInfo.appendChild(node.frag)
+          document.querySelectorAll('th').forEach( th => th.addEventListener('click', Recents.sort))
         })
         .then(() => document.querySelector(".info-title").textContent += ` in ${e.properties.name} ${geotype.charAt(0).toUpperCase() + geotype.slice(1)}`)
         // .then(document.querySelector(".info-title").textContent += ` in ${e.properties.name}`)
